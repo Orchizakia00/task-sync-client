@@ -11,9 +11,9 @@ const Footer = () => {
             <nav>
                 <header className="footer-title">Social</header>
                 <div className="grid grid-flow-col">
-                    <a className="btn btn-ghost"><FaFacebook size={30}></FaFacebook></a>
-                    <a className="btn btn-ghost"><FaTwitter size={30}></FaTwitter></a>
-                    <a className="btn btn-ghost"><FaInstagram size={30}></FaInstagram></a>
+                    <a className="btn btn-ghost"><FaFacebook size={20}></FaFacebook></a>
+                    <a className="btn btn-ghost"><FaTwitter size={20}></FaTwitter></a>
+                    <a className="btn btn-ghost"><FaInstagram size={20}></FaInstagram></a>
                 </div>
             </nav>
         </footer>
