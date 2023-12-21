@@ -64,6 +64,7 @@ const Register = () => {
                                         photo: data.photo,
                                     }
                                     console.log(userInfo);
+                                    toast.success('User created successfully!')
                                     navigate('/dashboard');
                                 })
                         })

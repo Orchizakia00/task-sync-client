@@ -21,7 +21,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className="navbar bg-base-100">
+        <div className="navbar bg-slate-200">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -39,17 +39,8 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                {/* <Link to={'/login'}><a className="btn">Sign In</a></Link> */}
                 {
                     user ? <>
-                        {/* <span className="mr-2">{user.displayName}</span>
-                        <label tabIndex={0} className="avatar mr-2">
-                            <div className="w-10 rounded-full">
-                                <img src={user.photoURL} alt={user.photoURL} className="" />
-                            </div>
-                        </label>
-
-                        <button onClick={handleLogout} className="btn btn-ghost normal-case">Log Out</button> */}
                         <div className="dropdown dropdown-end">
                             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                                 <div className="w-10 rounded-full">
@@ -57,12 +48,13 @@ const Navbar = () => {
                                 </div>
                             </div>
                             <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-                                <li className="mb-3">
+                                <li className="mb-2">
                                     <a className="justify-between">
                                         {user.displayName}
                                     </a>
                                 </li>
                                 <hr />
+                                <Link to={'/dashboard'}><li className="mt-2"><a>Dashboard</a></li></Link>
                                 <li onClick={handleLogout}><a>Logout</a></li>
                             </ul>
                         </div>
