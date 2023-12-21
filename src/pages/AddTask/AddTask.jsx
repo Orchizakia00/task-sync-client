@@ -8,6 +8,8 @@ const AddTask = () => {
     const axios = useAxios();
 
     const onSubmit = async (data) => {
+        // Set the default status to "todo"
+        data.status = 'todo';
         console.log(data)
 
         axios.post('/tasks', data)
@@ -108,7 +110,7 @@ const AddTask = () => {
                     </div>
 
                 </div>
-                {/* recipe details */}
+                {/* description */}
                 <div className="form-control">
                     <label className="label">
                         <span className="label-text">Description</span>
