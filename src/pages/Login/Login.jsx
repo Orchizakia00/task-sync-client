@@ -6,11 +6,13 @@ import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
+import useAxios from "../../hooks/useAxios";
 
 const Login = () => {
-    const {signInUser, signInWithGoogle} = useAuth();
+    const { signInUser, signInWithGoogle } = useAuth();
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const axios = useAxios();
 
     const handleLogin = e => {
         e.preventDefault();
@@ -33,34 +35,22 @@ const Login = () => {
     const handleGoogleSignIn = () => {
         signInWithGoogle()
             .then(result => {
-                const createdAt = result.user?.metadata?.creationTime;
-                // const user = { name, email, createdAt: createdAt, photo };
-                const { displayName, email, photoURL } = result.user; // Extract user data from Google sign-in response
-                console.log(displayName, email, photoURL);
-
+                const userInfo = {
+                    name: result.user.displayName,
+                    email: result.user.email,
+                    photo: result.user.photoURL,
+                }
                 // Send user data to the server
-                fetch("https://tasty-hub-server.vercel.app/user", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        name: displayName,
-                        email: email,
-                        photo: photoURL,
-                        createdAt: createdAt,
-                    }),
-                })
-                    .then((res) => res.json())
-                    .then((data) => {
-                        console.log(data);
-                        navigate("/dashboard");
-                        toast.success("Logged In Successfully!");
+                axios.post('/users', userInfo)
+                    .then(res => {
+                        if (res.data.message === 'user already exist') {
+                            toast.success('Logged In Successfully!');
+                            navigate('/dashboard');
+                        } else {
+                            toast.success('User Created Successfully!');
+                            navigate('/dashboard');
+                        }
                     })
-                    .catch((error) => {
-                        console.error(error);
-                        toast.error("Failed to log in with Google!");
-                    });
             })
             .catch(error => {
                 console.error(error);

@@ -4,13 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import animation from '../../assets/animations/register-Animation - 1703140395156.json';
 import Button from "../../components/Button/Button";
 import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const Register = () => {
-    const {createUser, updateUserProfile} = useAuth();
+    const { createUser, updateUserProfile } = useAuth();
     const navigate = useNavigate();
+    const axios = useAxios();
 
     const handleRegister = async (event) => {
         event.preventDefault();
@@ -63,9 +65,14 @@ const Register = () => {
                                         email: data.email,
                                         photo: data.photo,
                                     }
-                                    console.log(userInfo);
-                                    toast.success('User created successfully!')
-                                    navigate('/dashboard');
+                                    axios.post('/users', userInfo)
+                                        .then(res => {
+                                            console.log(res.data);
+                                            if (res.data.insertedId) {
+                                                toast.success('User Created Successfully!')
+                                                navigate('/dashboard')
+                                            }
+                                        })
                                 })
                         })
                 }
@@ -73,47 +80,47 @@ const Register = () => {
     }
 
     return (
-    <div className="bg-base-200 lg:w-full mx-auto">
-        <h2 className="text-5xl text-purple-600 font-bold text-center mb-5 pt-2">Register Now</h2>
-        <div className="hero min-h-[calc(100vh-80px)]">
-            <div className="hero-content flex-col lg:flex-row gap-40 justify-between">
-                <Lottie loop={true} size={200} animationData={animation}></Lottie>
-                <div className="card  shadow-2xl bg-base-100 flex-1">
-                    <form onSubmit={handleRegister} className="card-body w-96">
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Name</span>
-                            </label>
-                            <input type="text" placeholder="name" name="name" className="input input-bordered" required />
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Photo</span>
-                            </label>
-                            <input type="file" className="file-input file-input-bordered w-full max-w-xs" />
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Email</span>
-                            </label>
-                            <input type="email" placeholder="email" name="email" className="input input-bordered" required />
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Password</span>
-                            </label>
-                            <input type="password" placeholder="password" name="password" className="input input-bordered" required />
-                        </div>
+        <div className="bg-base-200 lg:w-full mx-auto">
+            <h2 className="text-5xl text-purple-600 font-bold text-center mb-5 pt-2">Register Now</h2>
+            <div className="hero min-h-[calc(100vh-80px)]">
+                <div className="hero-content flex-col lg:flex-row gap-40 justify-between">
+                    <Lottie loop={true} size={200} animationData={animation}></Lottie>
+                    <div className="card  shadow-2xl bg-base-100 flex-1">
+                        <form onSubmit={handleRegister} className="card-body w-96">
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Name</span>
+                                </label>
+                                <input type="text" placeholder="name" name="name" className="input input-bordered" required />
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Photo</span>
+                                </label>
+                                <input type="file" className="file-input file-input-bordered w-full max-w-xs" />
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Email</span>
+                                </label>
+                                <input type="email" placeholder="email" name="email" className="input input-bordered" required />
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Password</span>
+                                </label>
+                                <input type="password" placeholder="password" name="password" className="input input-bordered" required />
+                            </div>
 
-                        <div className="form-control mt-6">
-                            <Button text={'Register'}></Button>
-                        </div>
-                        <p className="text-center mt-2">Already have an account? Please <Link to={'/login'}><span className="font-bold text-purple-600">Login</span></Link></p>
-                    </form>
+                            <div className="form-control mt-6">
+                                <Button text={'Register'}></Button>
+                            </div>
+                            <p className="text-center mt-2">Already have an account? Please <Link to={'/login'}><span className="font-bold text-purple-600">Login</span></Link></p>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     );
 };
 
