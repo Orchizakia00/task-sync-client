@@ -9,6 +9,7 @@ const Navbar = () => {
 
     const navItems = <>
         <Link to={'/'}><li><a>Home</a></li></Link>
+        <Link to={'/dashboard'}><li><a>Dashboard</a></li></Link>
     </>;
 
     const handleLogout = () => {

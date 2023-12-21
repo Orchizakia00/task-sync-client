@@ -17,6 +17,8 @@ const Task = ({task}) => {
         style={{border: isDragging ? "5px solid purple" : "0px"}} 
         className="m-6 bg-purple-300 hover:bg-purple-400 rounded-lg p-5">
             <p className="text-2xl font-bold">{task.title}</p>
+            <p><span className="font-bold">Priority:</span> {task.priority}</p>
+            <p><span className="font-bold">Description:</span> {task.description}</p>
             <p><span className="font-bold">Deadline:</span> {task.deadline}</p>
         </div>
     );

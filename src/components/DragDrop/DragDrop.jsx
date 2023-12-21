@@ -1,64 +1,82 @@
+/* eslint-disable no-unused-vars */
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
 import Task from "../Task/Task";
 import { useState } from "react";
 import { useDrop } from "react-dnd";
-
+import useAuth from "../../hooks/useAuth";
 
 const DragDrop = () => {
     const axios = useAxios();
+    const { user } = useAuth();
     const [ongoingLists, setOngoingLists] = useState([]);
 
     const { data: tasks = [], refetch } = useQuery({
         queryKey: ['tasks'],
         queryFn: async () => {
-            const res = await axios.get('/tasks');
+            const res = await axios.get(`/tasks?email=${user.email}`);
             return res.data;
         }
     });
 
-    const [{ isOver }, drop] = useDrop(() => ({
+    const [{ isOver: isOngoingOver }, dropOngoing] = useDrop(() => ({
         accept: "div",
-        drop: (task) => addTaskToOngoingList(task.id),
+        drop: (task) => handleDrop(task.id, 'ongoing'),
         collect: (monitor) => ({
             isOver: !!monitor.isOver(),
         }),
     }));
 
-    const addTaskToOngoingList = async (taskId) => {
-        console.log(taskId);
+    const [{ isOver: isCompletedOver }, dropCompleted] = useDrop(() => ({
+        accept: "div",
+        drop: (task) => handleDrop(task.id, 'completed'),
+        collect: (monitor) => ({
+            isOver: !!monitor.isOver(),
+        }),
+    }));
+
+    const handleDrop = async (taskId, status) => {
         const selectedTask = tasks.find((task) => taskId === task._id);
 
-        // Update the backend to change the status of the task
-        await axios.put(`/tasks/${taskId}`, { status: 'ongoing' });
+        await axios.put(`/tasks/${taskId}`, { status });
 
-        // Update the local state to reflect the change
-        setOngoingLists((list) => [...list, selectedTask]);
+        if (status === 'ongoing') {
+            setOngoingLists((list) => [...list, selectedTask]);
+        } else if (status === 'completed') {
+            setOngoingLists((list) => list.filter((task) => task._id !== taskId));
+        }
+
         refetch();
     };
+
     const ongoingTasks = tasks.filter(task => task.status === 'ongoing');
-    console.log(ongoingTasks);
+    const completedTasks = tasks.filter(task => task.status === 'completed');
 
     return (
         <>
             <div className="col border-r border-black pr-4">
-                <h2 className="text-center font-bold text-4xl">To Do List</h2>
+                <h2 className="text-center font-bold text-4xl bg-purple-700 p-3 rounded-lg text-white">To Do List</h2>
                 {
                     tasks.filter(task => task.status === 'todo').map(task =>
                         <Task key={task._id} task={task}></Task>
                     )
                 }
             </div>
-            <div className="col border-r border-black pr-4" ref={drop}>
-                <h2 className="text-center font-bold text-4xl">Ongoing Tasks</h2>
+            <div className="col border-r border-black pr-4" ref={dropOngoing}>
+                <h2 className="text-center font-bold text-4xl bg-purple-700 p-3 rounded-lg text-white">Ongoing Tasks</h2>
                 {
-                    ongoingTasks.filter(task => task.status === 'ongoing').map(task =>
+                    ongoingTasks.map(task =>
                         <Task key={task._id} task={task}></Task>
                     )
                 }
             </div>
-            <div>
-                <h2 className="text-center font-bold text-4xl">Completed Tasks</h2>
+            <div className="col" ref={dropCompleted}>
+                <h2 className="text-center font-bold text-4xl bg-purple-700 p-3 rounded-lg text-white">Completed Tasks</h2>
+                {
+                    completedTasks.map(task =>
+                        <Task key={task._id} task={task}></Task>
+                    )
+                }
             </div>
         </>
     );

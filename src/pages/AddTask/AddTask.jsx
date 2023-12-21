@@ -2,14 +2,17 @@ import { useForm } from "react-hook-form";
 import useAxios from "../../hooks/useAxios";
 import { FaTasks } from "react-icons/fa";
 import toast from "react-hot-toast";
+import useAuth from "../../hooks/useAuth";
 
 const AddTask = () => {
     const { register, handleSubmit, reset } = useForm();
     const axios = useAxios();
+    const {user} = useAuth();
 
     const onSubmit = async (data) => {
         // Set the default status to "todo"
         data.status = 'todo';
+        data.email = user.email;
         console.log(data)
 
         axios.post('/tasks', data)
