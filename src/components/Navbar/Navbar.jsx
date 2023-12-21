@@ -1,12 +1,24 @@
 import { Link } from "react-router-dom";
 import { FaClock } from "react-icons/fa";
+import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 
 const Navbar = () => {
+    const { user, logOut } = useAuth();
 
     const navItems = <>
         <Link to={'/'}><li><a>Home</a></li></Link>
-    </>
+    </>;
+
+    const handleLogout = () => {
+        logOut()
+            .then(res => {
+                console.log(res)
+                toast.success('Logged Out Successfully!')
+            })
+            .catch(err => console.log(err))
+    }
 
     return (
         <div className="navbar bg-base-100">
@@ -27,7 +39,38 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn">Sign In</a>
+                {/* <Link to={'/login'}><a className="btn">Sign In</a></Link> */}
+                {
+                    user ? <>
+                        {/* <span className="mr-2">{user.displayName}</span>
+                        <label tabIndex={0} className="avatar mr-2">
+                            <div className="w-10 rounded-full">
+                                <img src={user.photoURL} alt={user.photoURL} className="" />
+                            </div>
+                        </label>
+
+                        <button onClick={handleLogout} className="btn btn-ghost normal-case">Log Out</button> */}
+                        <div className="dropdown dropdown-end">
+                            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                <div className="w-10 rounded-full">
+                                    <img alt="Tailwind CSS Navbar component" src={user.photoURL} />
+                                </div>
+                            </div>
+                            <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+                                <li className="mb-3">
+                                    <a className="justify-between">
+                                        {user.displayName}
+                                    </a>
+                                </li>
+                                <hr />
+                                <li onClick={handleLogout}><a>Logout</a></li>
+                            </ul>
+                        </div>
+                    </>
+
+                        :
+                        <Link to={'/login'}><button className="btn btn-ghost normal-case">Login</button></Link>
+                }
             </div>
         </div>
     );

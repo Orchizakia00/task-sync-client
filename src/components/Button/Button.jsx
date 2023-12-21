@@ -2,7 +2,7 @@
 
 const Button = ({text}) => {
     return (
-        <button className="btn bg-purple-600 text-white">{text}</button>
+        <button className="btn bg-purple-600 text-white hover:bg-purple-400 hover:text-black">{text}</button>
     );
 };
 

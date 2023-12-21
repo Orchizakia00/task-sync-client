@@ -1,0 +1,105 @@
+import Lottie from "lottie-react";
+import Button from "../../components/Button/Button";
+import animation from "../../assets/animations/login-Animation - 1703139684108.json"
+import { Link, useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
+import toast from "react-hot-toast";
+import useAuth from "../../hooks/useAuth";
+import { useState } from "react";
+
+const Login = () => {
+    const {signInUser, signInWithGoogle} = useAuth();
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+
+    const handleLogin = e => {
+        e.preventDefault();
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+        console.log(email, password);
+
+        signInUser(email, password)
+            .then(result => {
+                console.log(result.user);
+                navigate('/');
+                toast.success('Logged In Successfully!');
+            })
+            .catch(error => {
+                setError(error.message);
+                toast.error('Invalid Email or Password!!');
+            })
+    }
+
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+            .then(result => {
+                const createdAt = result.user?.metadata?.creationTime;
+                // const user = { name, email, createdAt: createdAt, photo };
+                const { displayName, email, photoURL } = result.user; // Extract user data from Google sign-in response
+                console.log(displayName, email, photoURL);
+
+                // Send user data to the server
+                fetch("https://tasty-hub-server.vercel.app/user", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        name: displayName,
+                        email: email,
+                        photo: photoURL,
+                        createdAt: createdAt,
+                    }),
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log(data);
+                        navigate("/dashboard");
+                        toast.success("Logged In Successfully!");
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        toast.error("Failed to log in with Google!");
+                    });
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    }
+
+    return (
+        <div className="bg-base-200 lg:w-full mx-auto">
+            <h2 className="text-5xl text-purple-600 font-bold text-center mb-5 pt-2">Login Now</h2>
+            <div className="hero min-h-[calc(100vh-80px)]">
+                <div className="hero-content flex-col lg:flex-row gap-40 justify-between">
+                    <Lottie loop={true} size={200} animationData={animation}></Lottie>
+                    <div className="card  shadow-2xl bg-base-100 flex-1">
+                        <form onSubmit={handleLogin} className="card-body w-96">
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Email</span>
+                                </label>
+                                <input type="email" placeholder="email" name="email" className="input input-bordered" required />
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Password</span>
+                                </label>
+                                <input type="password" placeholder="password" name="password" className="input input-bordered" required />
+                            </div>
+
+                            <div className="form-control mt-6">
+                                <Button text={'Login'}></Button>
+                                <button onClick={handleGoogleSignIn} className="btn mt-3"><FcGoogle></FcGoogle> Continue with Google</button>
+                            </div>
+                            <p className="mb-6 text-center"> {error} </p>
+                            <p className="text-center mt-2">Do not have an account? Please <Link to={'/register'}><span className="font-bold text-purple-600">Register</span></Link></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Login;
