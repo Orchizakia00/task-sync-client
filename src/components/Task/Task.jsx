@@ -16,6 +16,7 @@ const Task = ({ task }) => {
             return res.data;
         }
     });
+    console.log(tasks);
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: "div",
