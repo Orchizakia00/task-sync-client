@@ -1,4 +1,5 @@
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 
 const Footer = () => {
@@ -11,9 +12,9 @@ const Footer = () => {
             <nav>
                 <header className="footer-title">Social</header>
                 <div className="grid grid-flow-col">
-                    <a className="btn btn-ghost"><FaFacebook size={20}></FaFacebook></a>
-                    <a className="btn btn-ghost"><FaTwitter size={20}></FaTwitter></a>
-                    <a className="btn btn-ghost"><FaInstagram size={20}></FaInstagram></a>
+                    <Link to={'https://www.facebook.com/'}><a className="btn btn-ghost"><FaFacebook size={20}></FaFacebook></a></Link>
+                    <Link to={'https://www.twitter.com/'}><a className="btn btn-ghost"><FaTwitter size={20}></FaTwitter></a></Link>
+                    <Link to={'https://www.instagram.com/'}><a className="btn btn-ghost"><FaInstagram size={20}></FaInstagram></a></Link>
                 </div>
             </nav>
         </footer>

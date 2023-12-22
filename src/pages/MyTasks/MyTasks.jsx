@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../hooks/useAxios";
 import useAuth from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
+import Button from "../../components/Button/Button";
 
 
 const MyTasks = () => {
@@ -16,6 +18,15 @@ const MyTasks = () => {
         }
     });
     console.log(tasks);
+
+    if (tasks.length < 1) {
+        return <div className="bg-purple-200  min-h-screen flex flex-col justify-center items-center">
+            <p className="text-lg">No Task Found</p>
+            <div className="mt-6">
+                <Link to={'/add-task'}><Button text={'Add New Task'}></Button></Link>
+            </div>
+        </div>
+    }
 
     return (
         <div className="bg-purple-200  min-h-screen">
