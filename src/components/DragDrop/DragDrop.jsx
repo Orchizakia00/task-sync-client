@@ -19,6 +19,8 @@ const DragDrop = () => {
         }
     });
 
+    const todoTasks = tasks.filter(task => task.status === 'todo');
+
     const [{ isOver: isOngoingOver }, dropOngoing] = useDrop(() => ({
         accept: "div",
         drop: (task) => handleDrop(task.id, 'ongoing'),
@@ -57,7 +59,7 @@ const DragDrop = () => {
             <div className="col border-r border-black pr-4">
                 <h2 className="text-center font-bold text-4xl bg-purple-700 p-3 rounded-lg text-white">To Do List</h2>
                 {
-                    tasks.filter(task => task.status === 'todo').map(task =>
+                    todoTasks.map(task =>
                         <Task key={task._id} task={task}></Task>
                     )
                 }

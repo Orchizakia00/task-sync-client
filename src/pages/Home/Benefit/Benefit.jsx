@@ -3,7 +3,7 @@ const Benefit = () => {
     return (
         <section className="bg-purple-200 py-10">
             <div className="container mx-auto text-center px-10 mb-14">
-                <h2 className="text-4xl font-bold mb-6">Who Can Benefit?</h2>
+                <h2 className="text-4xl font-bold mb-10">Who Can Benefit?</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {/* Person 1 */}
                     <div className="bg-purple-300 p-6 rounded-lg shadow-md">

@@ -5,14 +5,16 @@ import toast from "react-hot-toast";
 import { FaTrashAlt } from "react-icons/fa";
 import useAxios from "../../hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../hooks/useAuth";
 
 const Task = ({ task }) => {
     const axios = useAxios();
+    const {user} = useAuth();
 
     const { data: tasks = [], refetch } = useQuery({
         queryKey: ['tasks'],
         queryFn: async () => {
-            const res = await axios.get('/tasks');
+            const res = await axios.get(`/tasks?email=${user.email}`);
             return res.data;
         }
     });
