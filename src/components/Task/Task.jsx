@@ -2,10 +2,11 @@
 
 import { useDrag } from "react-dnd";
 import toast from "react-hot-toast";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import useAxios from "../../hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const Task = ({ task }) => {
     const axios = useAxios();
@@ -80,6 +81,7 @@ const Task = ({ task }) => {
             <p><span className="font-bold">Description:</span> {task.description}</p>
             <p><span className="font-bold">Deadline:</span> {task.deadline}</p>
             <div className="text-right">
+                <Link to={`/edit-task/${task._id}`}><button className="btn mt-3 mr-3"><FaEdit color="purple"></FaEdit></button></Link>
                 <button onClick={() => handleDelete(task)} className="btn mt-3"><FaTrashAlt color="red"></FaTrashAlt></button>
             </div>
         </div>

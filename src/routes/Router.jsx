@@ -11,6 +11,7 @@ import PrivateRoute from "./PrivateRoute";
 import Faq from "../pages/Faq/Faq";
 import Support from "../pages/Support/Support";
 import MyTasks from "../pages/MyTasks/MyTasks";
+import EditTask from "../pages/EditTask/EditTask";
 
 
 const router = createBrowserRouter([
@@ -29,6 +30,11 @@ const router = createBrowserRouter([
             {
                 path: '/add-task',
                 element: <PrivateRoute><AddTask /></PrivateRoute>,
+            },
+            {
+                path: '/edit-task/:id',
+                element: <PrivateRoute><EditTask /></PrivateRoute>,
+                loader: ({params}) => fetch(`https://task-sync-server.vercel.app/tasks/${params.id}`)
             },
             {
                 path: '/my-tasks',
