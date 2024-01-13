@@ -1,8 +1,16 @@
-# React + Vite
+# Task Sync - a To-Do List application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Live Link: https://task-sync-27a0a.web.app
 
-Currently, two official plugins are available:
+## Features: 
+- Makes your productivity more effective.
+- Authenticated users can access dashboard.
+- They can add new tasks to the to-do list.
+- User can drag and drop tasks from "To Do List" to "Ongoing Tasks" and also from "Ongoing Tasks" to "Completed Tasks".
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies:
+- React
+- MongoDB
+- NodeJS
+- ExpressJS
+- Firebase
